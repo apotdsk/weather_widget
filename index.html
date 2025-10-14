@@ -1,12 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Foxy's Weather</title>
-  <script type="module" src="src/main.ts"></script>
-</head>
-<body>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foxy's Weather</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="src/main.ts"></script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div class="weather-widget">
+        <img src="logo.svg" alt="Logo" class="logo" />
+        <div class="bar">
+          <div class="search">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Enter the City"
+            />
+            <button class="search-cancel">×</button>
+            <p class="search-selected">Selected:</p>
+          </div>
+        </div>
+
+        <div class="weather-today">
+          <div class="today-main">
+            <h2 class="today-current">-5 C</h2>
+            <p class="today-description">Rain +8</p>
+          </div>
+          <div class="today-middle">
+            <p class="current-description">Cloudy</p>
+            <p class="location">Kyiv</p>
+          </div>
+          <div class="img-container">
+            <img
+              src="clouds.svg"
+              alt="Cloudy Weather Logo"
+              class="weather-logo"
+            />
+          </div>
+        </div>
+
+        <div class="week-forecast">
+          <hr class="day-divider" />
+          <div class="week-day">
+            <h3 class="day-name">THU</h3>
+            <div class="reg-img-container">
+              <img
+                src="thunder.svg"
+                alt="Thunder Weather Logo"
+                class="week-weather-logo"
+              />
+            </div>
+            <p class="day-description">Rain</p>
+            <div class="day-temps">
+              <div class="day-wrapper">
+                <small class="day-time">Day</small>
+                <p class="temp-number">+5</p>
+                <p class="temp-number">+1</p>
+                <small class="day-time">Night</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

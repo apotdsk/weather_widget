@@ -1,0 +1,162 @@
+@use 'vars' as vars;
+@use 'mixins' as mx;
+
+p,
+h2,
+h3,
+small,
+input {
+  font-family: vars.$font-family;
+}
+
+p,
+h3 {
+  font-weight: vars.$p-weight;
+  font-size: vars.$p-fs;
+  margin: 0;
+}
+
+small {
+  font-weight: vars.$small-weight;
+  font-size: vars.$small-fs;
+}
+
+h2 {
+  font-weight: vars.$h2-weight;
+}
+
+.page-wrapper {
+  @include mx.center;
+  padding: vars.$page-padding;
+}
+
+.weather-widget {
+  @include mx.center;
+  width: 50%;
+}
+
+.logo {
+  padding: vars.$img-padding;
+  margin: vars.$img-margin;
+  width: vars.$logo-width;
+  background-color: vars.$logo-bg;
+  // background-clip: content-box;
+  border-radius: 5px;
+}
+
+.bar {
+  @include mx.center;
+  width: 100%;
+}
+
+.search {
+  position: relative;
+  width: 80%;
+}
+
+.search-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: vars.$input-margin;
+  border: 1px solid #000;
+  border-radius: 8px;
+}
+
+.search-cancel {
+  position: absolute;
+  transform: translateX(-125%) translateY(30%);
+  border: none;
+  background: none;
+  font-size: vars.$cancel-fs;
+  cursor: pointer;
+}
+
+.search:has(input:placeholder-shown) .search-cancel {
+  display: none;
+}
+
+.search-selected {
+  padding: vars.$selected-padding;
+  color: vars.$selected-text-color;
+  font-weight: vars.$small-weight;
+  font-size: vars.$small-fs;
+}
+
+.weather-today {
+  @include mx.weather-center;
+  background-color: vars.$today-color;
+  width: 80%;
+  border-radius: 10px;
+  color: vars.$second-text-color;
+  margin-bottom: vars.$weather-padding-bottom;
+  padding: 0 vars.$day-side-padding;
+  box-sizing: border-box;
+}
+
+.week-day {
+  padding: 0 0 calc(vars.$day-padding * 1) 0;
+  @include mx.weather-center;
+  align-items: center;
+}
+
+.today-current {
+  font-size: vars.$today-fs;
+  margin: 0;
+  padding-top: vars.$desc-padding;
+}
+
+.today-description {
+  padding: vars.$desc-padding 0;
+  text-align: center;
+}
+
+.img-container {
+  width: 20%;
+  padding: vars.$img-padding;
+}
+
+.weather-logo {
+  width: 100%;
+}
+
+.today-middle {
+  @include mx.center;
+}
+
+.current-description {
+  padding: vars.$desc-padding 0;
+}
+
+.week-forecast {
+  width: 80%;
+}
+
+.reg-img-container {
+  width: 20%;
+  padding: vars.$img-padding;
+}
+
+.week-weather-logo {
+  width: 100%;
+}
+
+.day-temps {
+  align-self: stretch;
+  display: flex;
+  // @include mx.center;
+  // align-items: flex-start;
+  // justify-self: space-be;
+}
+
+.day-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+@media (width < 600px) {
+  .weather-widget {
+    width: 90%;
+  }
+}
