@@ -1,0 +1,6 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": ["vite", "tsconfig", "eslint", "prettier", "cspell"],
+  "ignorePaths": ["node_modules", "dist"]
+}

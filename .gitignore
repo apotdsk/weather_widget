@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.vscode/
+*.log
+.eslintcache
+.cspell/cache
+*.tsbuildinfo
+.env
