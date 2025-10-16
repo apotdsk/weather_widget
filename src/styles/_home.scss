@@ -91,6 +91,7 @@ h2 {
   margin-bottom: vars.$weather-padding-bottom;
   padding: 0 vars.$day-side-padding;
   box-sizing: border-box;
+  height: vars.$current-height;
 }
 
 .week-day {
@@ -103,6 +104,10 @@ h2 {
   font-size: vars.$today-fs;
   margin: 0;
   padding-top: vars.$desc-padding;
+}
+
+.location {
+  text-align: center;
 }
 
 .today-description {
@@ -125,6 +130,7 @@ h2 {
 
 .current-description {
   padding: vars.$desc-padding 0;
+  text-align: center;
 }
 
 .week-forecast {
@@ -155,8 +161,20 @@ h2 {
   flex: 1;
 }
 
-@media (width < 600px) {
+@media (width < 800px) {
   .weather-widget {
     width: 90%;
+  }
+}
+
+@media (width < 500px) {
+  .weather-today {
+    padding: 0;
+  }
+  .today-current {
+    padding: 0 1rem;
+  }
+  .weather-widget {
+    width: 100%;
   }
 }
