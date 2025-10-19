@@ -2,51 +2,33 @@ import '@/styles/main.scss';
 import countries from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
 import uk from 'i18n-iso-countries/langs/uk.json';
-// import { error } from 'console';
+import {
+  idToImage,
+  currentLoad,
+  dayLoad,
+  showToast,
+  normalizeInput,
+  capitalize,
+  showLoading,
+  removeLoading,
+} from '.';
+import type { TWeatherInfo, TCombined } from '.';
 
 const cancelBtn = document.querySelector<HTMLButtonElement>('.search-cancel');
 const searchInput = document.querySelector<HTMLInputElement>('.search-input');
-const currentField = document.querySelector<HTMLDivElement>('.weather-today');
-const forecastField = document.querySelector<HTMLDivElement>('.week-forecast');
+const currentField = document.querySelector<HTMLDivElement>('.current');
+const forecastField = document.querySelector<HTMLDivElement>('.forecast');
 const selected =
   document.querySelector<HTMLParagraphElement>('.search-selected');
 
 countries.registerLocale(en);
 countries.registerLocale(uk);
 
-type TWeatherInfo = {
-  city?: string;
-  temp?: number;
-  temp_min?: number;
-  weather: string;
-  description?: string;
-  weather_code: number;
-  date?: string;
-  icon: string;
-  country: string;
-};
-
-type TCombined = {
-  currentProcessed: TWeatherInfo;
-  forecastProcessed: TWeatherInfo[];
-};
-
-const idToImage: Record<number, string> = {
-  2: 'thunders.svg',
-  3: 'rain.svg',
-  5: 'strong_rain.svg',
-  6: 'snow.svg',
-  7: 'thunders.svg',
-  8: 'clouds.svg',
-  9: 'sun.svg',
-};
-
 if (cancelBtn) {
   cancelBtn.addEventListener('click', () => {
     if (searchInput) {
       searchInput.value = '';
       clearPage();
-      // console.log('123');
     }
   });
 }
@@ -71,11 +53,13 @@ async function getWeather(input: [string, string?]) {
   }
   if (!city) {
     showToast('Please Enter the City');
+    clearPage();
     return;
   }
 
   if (/^\d+$/.test(city)) {
     showToast('Please enter a valid city name, not only numbers.');
+    clearPage();
     return;
   }
 
@@ -91,9 +75,14 @@ async function getWeather(input: [string, string?]) {
 
     if (!currentRes.ok || !forecastRes.ok) {
       clearPage();
-      if (currentRes.status === 404) showToast('City Not Found');
+      if (currentRes.status === 404) {
+        showToast('City Not Found');
+        clearPage();
+      }
       throw new Error(`HTTP ${currentRes.status}, ${forecastRes.status}`);
     }
+
+    showLoading();
 
     const [currentData, forecastData] = await Promise.all([
       currentRes.json(),
@@ -110,14 +99,6 @@ async function getWeather(input: [string, string?]) {
 
 function matchIcon(id: number): string {
   return idToImage[id === 800 ? 9 : Math.floor(id / 100)] ?? '';
-}
-
-function showToast(message: string) {
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = message;
-  document.body.append(toast);
-  setTimeout(() => toast.remove(), 3000);
 }
 
 function processData(input: [string, string?]): Promise<TCombined> {
@@ -193,95 +174,20 @@ function processData(input: [string, string?]): Promise<TCombined> {
   });
 }
 
-function getCh(temp: number | undefined): string | undefined {
-  if (temp) {
-    if (temp < 0) {
-      return '-';
-    } else if (temp > 0) {
-      return '+';
-    } else {
-      return '';
-    }
-  }
-  return '';
-}
-
-function currentLoad(weather: TWeatherInfo) {
-  let temp;
-  return `
-  <div class="today-main">
-    <h2 class="today-current">${getCh(weather.temp)}${(temp = weather.temp ? Math.round(weather.temp) : weather.temp)}°C</h2>
-    <p class="today-description">${weather.weather} ${getCh(weather.temp_min)}${(temp = weather.temp_min ? Math.round(weather.temp_min) : weather.temp_min)}°C</p>
-  </div>
-  <div class="today-middle">
-    <p class="current-description">${weather.description}</p>
-    <p class="location">${weather.city}, ${countries.getName(weather.country, 'en')}</p>
-  </div>
-  <div class="img-container">
-    <img
-      src="${weather.icon}"
-      alt="${weather.weather}"
-      class="weather-logo"
-    />
-  </div>`;
-}
-
-function dayLoad(weather: TWeatherInfo) {
-  let temp;
-  return `
-  <hr class="day-divider" />
-    <div class="week-day">
-      <h3 class="day-name">${weather.date}</h3>
-      <div class="reg-img-container">
-        <img
-          src="${weather.icon}"
-          alt="${weather.weather}"
-          class="week-weather-logo"
-        />
-      </div>
-      <p class="day-description">${weather.weather}</p>
-      <div class="day-temps">
-        <div class="day-wrapper">
-          <small class="day-time">Day</small>
-          <p class="temp-number">${getCh(weather.temp)}${(temp = weather.temp ? Math.round(weather.temp) : weather.temp)}°C</p>
-          <p class="temp-number">${getCh(weather.temp_min)}${(temp = weather.temp_min ? Math.round(weather.temp_min) : weather.temp_min)}°C</p>
-          <small class="day-time">Night</small>
-        </div>
-      </div>
-    </div>`;
-}
-
-// normalize the Input
-function normalizeInput(input: string): [string, string?] {
-  const parts = input.split(/[,;]+/);
-  const city = capitalize(parts[0]!);
-  let countryCode: string | undefined;
-  for (const part of parts.slice(1)) {
-    countryCode =
-      countries.getAlpha2Code(part, 'en') ||
-      countries.getAlpha2Code(part, 'uk') ||
-      (/^[A-Z]{2}$/i.test(part) ? part.toUpperCase() : undefined);
-    if (countryCode) break;
-  }
-  return countryCode ? [city, countryCode] : [city];
-}
-
-function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
-// render the web
-
 function renderWeather(input: [string, string?]) {
   processData(input)
     .then(({ currentProcessed, forecastProcessed }) => {
-      if (currentField) {
-        currentField.innerHTML = currentLoad(currentProcessed);
-      }
+      setTimeout(() => {
+        if (currentField) {
+          currentField.innerHTML = currentLoad(currentProcessed);
+        }
 
-      if (forecastField) {
-        forecastField.innerHTML = forecastProcessed.map(dayLoad).join('');
-      }
+        if (forecastField) {
+          forecastField.innerHTML = forecastProcessed.map(dayLoad).join('');
+        }
+
+        removeLoading();
+      }, 1000);
 
       // console.log(currentProcessed);
       // console.log(forecastProcessed);
@@ -303,3 +209,9 @@ searchInput?.addEventListener('keydown', (event) => {
   }
 });
 // test
+
+//at the start of the program skeleton is not shown
+
+//to the showLoading add the skeleton
+
+//set timeout to test;

@@ -1,0 +1,76 @@
+@use 'vars' as vars;
+
+:root {
+  --sk-icon-size: #{vars.$sk-icon-big};
+}
+
+.skeleton {
+  display: none;
+  pointer-events: none;
+  background: linear-gradient(90deg, #e9eef3 25%, #f5f7fa 50%, #e9eef3 75%);
+  background-size: 200% 100%;
+  border-radius: 12px;
+  animation: shimmer 1.5s infinite linear;
+
+  .day-divider {
+    border: none;
+    height: 1px;
+    background: vars.$sk-bg;
+  }
+
+  .day-name,
+  .day-weather,
+  .time-temp {
+    width: 100%;
+    min-height: 1rem;
+    border-radius: 8px;
+    background: vars.$sk-bg;
+    color: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .day-name {
+    min-height: 1.25rem;
+    width: 70%;
+    justify-self: start;
+  }
+
+  .day-weather {
+    width: 80%;
+  }
+
+  .time-temp {
+    width: 60%;
+    &:nth-of-type(3) {
+      width: 40%;
+    }
+  }
+
+  .day-time {
+    opacity: 0.35;
+  }
+
+  .day-img-container {
+    width: var(--sk-icon-size);
+    height: var(--sk-icon-size);
+    border-radius: 50%;
+    background: vars.$sk-bg;
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+@media (width < vars.$mid-screen) {
+  :root {
+    --sk-icon-size: #{vars.$sk-icon-small};
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

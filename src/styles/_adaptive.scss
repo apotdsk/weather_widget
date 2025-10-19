@@ -1,0 +1,48 @@
+@use 'vars' as vars;
+@use 'mixins' as mx;
+
+@media (width < vars.$mid-screen) {
+  .day-weather-logo {
+    height: vars.$icon-mid-height;
+  }
+  .weather-logo {
+    height: vars.$icon-mid-height;
+  }
+  .current {
+    height: vars.$element-mid-height;
+  }
+}
+
+@media (width < vars.$small-screen) {
+  .weather-widget {
+    width: 90%;
+  }
+  .day {
+    height: vars.$element-mid-height;
+  }
+  .current {
+    gap: 0;
+  }
+  .weather-logo {
+    height: vars.$icon-small-height;
+  }
+  .day-weather-logo {
+    height: vars.$icon-mid-height;
+  }
+  .current {
+    height: vars.$element-small-height;
+  }
+}
+
+@media (width < vars.$mobile-screen) {
+  .current {
+    padding: 0;
+  }
+
+  .weather-widget {
+    width: 100%;
+  }
+  .br-mobile {
+    display: block;
+  }
+}

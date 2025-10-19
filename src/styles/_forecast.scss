@@ -1,0 +1,44 @@
+@use 'vars' as vars;
+@use 'mixins' as mx;
+
+.forecast {
+  width: 80%;
+}
+
+.day {
+  padding: 0 0 calc(vars.$day-padding * 1) 0;
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 1fr;
+  height: vars.$element-big-height;
+  place-items: center;
+  gap: 1rem;
+}
+
+.day-name {
+  justify-self: start;
+}
+
+.day-weather-logo {
+  height: vars.$icon-big-height;
+  object-fit: cover;
+  display: block;
+}
+
+.day-temps {
+  justify-self: end;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.temps-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  height: 80%;
+}
+
+.br-mobile {
+  display: none;
+}

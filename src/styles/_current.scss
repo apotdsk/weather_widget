@@ -1,0 +1,54 @@
+@use 'vars' as vars;
+@use 'mixins' as mx;
+
+.current {
+  // @include mx.weather-center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: vars.$today-color;
+  gap: 0.5rem;
+  place-items: center;
+
+  height: vars.$element-big-height;
+  width: 80%;
+  border-radius: 10px;
+  color: vars.$second-text-color;
+  margin-bottom: vars.$weather-padding-bottom;
+  padding: 0 vars.$day-side-padding;
+  box-sizing: border-box;
+  // height: vars.$current-height;
+}
+
+.current-left {
+  @include mx.center;
+}
+
+.left-temp {
+  font-size: vars.$today-fs;
+  margin: 0;
+  padding-top: vars.$desc-padding;
+}
+
+.left-weather {
+  padding: vars.$desc-padding 0;
+  text-align: center;
+}
+
+.current-middle {
+  @include mx.center;
+}
+
+.weather-logo {
+  height: vars.$icon-big-height;
+  object-fit: cover;
+  display: block;
+}
+
+.middle-weather-description {
+  padding: vars.$desc-padding 0;
+  text-align: center;
+}
+
+.middle-location {
+  text-align: center;
+}
