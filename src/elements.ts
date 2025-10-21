@@ -64,7 +64,11 @@ export function showToast(message: string) {
   toast.className = 'toast';
   toast.textContent = message;
   document.body.append(toast);
-  setTimeout(() => toast.remove(), 3000);
+  loadElements(true);
+  setTimeout(() => {
+    toast.remove();
+    // loadElements(false);
+  }, 1000);
 }
 
 const loading = document.createElement('div');

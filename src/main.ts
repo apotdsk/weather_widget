@@ -78,11 +78,15 @@ async function getWeather(input: [string, string?]) {
       if (currentRes.status === 404) {
         showToast('City Not Found');
         clearPage();
+        // showLoading();
       }
       throw new Error(`HTTP ${currentRes.status}, ${forecastRes.status}`);
     }
 
     showLoading();
+    // setTimeout(() => {
+    //   console.log('...');
+    // }, 1000);
 
     const [currentData, forecastData] = await Promise.all([
       currentRes.json(),
@@ -197,21 +201,40 @@ function renderWeather(input: [string, string?]) {
     });
 }
 
+function handleInput(input: string) {
+  const inputSelect = input.split(/,\s/).map((e) => ' ' + capitalize(e));
+  if (selected) selected.innerText = 'Selected: ' + inputSelect;
+  const normalizedInput = normalizeInput(input);
+  renderWeather(normalizedInput);
+}
+
+function debounce(fn: (...args: any[]) => void, delay = 500) {
+  let timeout: number;
+  // removeLoading();
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = window.setTimeout(() => fn(...args), delay);
+  };
+}
+
+const debounceWeather = debounce(handleInput);
+
 // final function to get the input it, normalize it, render
-searchInput?.addEventListener('keydown', (event) => {
-  // console.log('curr val:', (event.target as HTMLInputElement).value);
-  if (event.key === 'Enter') {
-    const input = (event.target as HTMLInputElement).value;
-    const inputSelect = input.split(/,\s/).map((e) => ' ' + capitalize(e));
-    if (selected) selected.innerText = 'Selected: ' + inputSelect;
-    const normalizedInput = normalizeInput(input);
-    renderWeather(normalizedInput);
-  }
-});
+// searchInput?.addEventListener('keydown', (event) => {
+//   // console.log('curr val:', (event.target as HTMLInputElement).value);
+//   if (event.key === 'Enter') {
+//     event.preventDefault();
+//     handleInput((event.target as HTMLInputElement).value);
+//   }
+// });
 // test
+
+searchInput?.addEventListener('input', (event) => {
+  debounceWeather((event.target as HTMLInputElement).value);
+});
 
 //at the start of the program skeleton is not shown
 
 //to the showLoading add the skeleton
 
-//set timeout to test;
+//set timeout to test on line 180;
